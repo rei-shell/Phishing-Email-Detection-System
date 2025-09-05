@@ -1,10 +1,10 @@
 # Phishing-Email-Detection-System (TEAM P15-1)
 
 ## Team Members: 
-Pek Qi Feng, 2502624, 2502624@sit.singaporetech.edu.sg
-Jomond Lim Zi Kang, 2500340, 2500340@sit.singaporetech.edu.sg
-Raphael Ang, 2500632, 2500632@sit.singaporetech.edu.sg
-Rachelle Ang, 2503641, 2503641@sit.singaporetech.edu.sg	
+- Pek Qi Feng, 2502624, 2502624@sit.singaporetech.edu.sg
+- Jomond Lim Zi Kang, 2500340, 2500340@sit.singaporetech.edu.sg
+- Raphael Ang, 2500632, 2500632@sit.singaporetech.edu.sg
+- Rachelle Ang, 2503641, 2503641@sit.singaporetech.edu.sg	
 
 ## Project Title: 
 Phishing Email Detection System
