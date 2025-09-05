@@ -10,7 +10,7 @@
 Phishing Email Detection System
 
 ## Short description: 
-Detect fraudulent email, 
+Detect fraudulent email/Identify suspicious email, risk score provided for user.
 
 ## Problem: 
 Email scam is a growing threat in the cyber landscape. The goal is to build a system that automatically analyses emails and flags out potential phishing attempts.
