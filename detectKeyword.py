@@ -1,7 +1,5 @@
-﻿import pandas as pd
-import tkinter as tk
+﻿import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from email_validator import validate_email, EmailNotValidError
 import re
 import csv
 
