@@ -21,7 +21,7 @@ body {
 }
 /*form styles*/
 .msform {
-	width: 400px;
+	width: 90%%;
 	margin: 50px auto;
 	text-align: center;
 	position: relative;
@@ -51,7 +51,7 @@ body {
     box-sizing: border-box;
     font-family: montserrat;
     color: #2C3E50;
-    font-size: 13px;
+    font-size: 1rem;
 }
 .msform input.error, .msform textarea.error{
     border-color: rgb(255,99,71);
@@ -75,16 +75,10 @@ body {
 }
 /*headings*/
 .fs-title {
-    font-size: 15px;
+    font-size: 1.3rem;
     text-transform: uppercase;
     color: #2C3E50;
     margin-bottom: 10px;
-}
-.fs-subtitle {
-    font-weight: normal;
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
 }
 /*progressbar*/
 .progressbar {
@@ -97,7 +91,7 @@ body {
     list-style-type: none;
     color: white;
     text-transform: uppercase;
-    font-size: 9px;
+    font-size: 0.8rem;
     width: 33.33%;
     float: left;
     position: relative;
@@ -131,17 +125,10 @@ body {
     background: rgb(255,99,71);
     color: white;
 }
-.vtcha{
-    max-width: 100%;
-}
-.vtcha .item-box,.vtcha .target-box{
-    width: 170px;
-    margin: 10px auto 0;
-}
 </style>
 <body>
     <!-- multistep form -->
-<form class="msform" method="post" action="/submit" id="phishingForm" onsubmit="return false">
+<form class="msform" method="post" action="/submit" id="phishingForm" onclick="return false;">
         <!-- progressbar -->
     <ul class="progressbar">
         <li class="active">Email Checks</li>
@@ -153,8 +140,6 @@ body {
     <h2 class="fs-title">Phishing Email Detection System</h2>
     <input type="email" name="sender_email" placeholder="Sender Email" required>
     <div class="error-message" id="sender-email-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
-    <input type="email" name="receiver_email" placeholder="Receiver Email" required>
-    <div class="error-message" id="receiver-email-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
     <input type="button" name="next" class="next action-button" value="Next" onclick="
         if(validateFieldset($(this).parent())){
             $('.progressbar li').eq($('fieldset').index($(this).parent())+1).addClass('active');
@@ -164,21 +149,94 @@ body {
 <fieldset data-check-id="2">
     <h2 class="fs-title">Phishing Email Detection System</h2>
     <input type="text" name="subject" placeholder="Subject" required>
+    <div class="error-message" id="subject-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
     <textarea name="body" placeholder="Body Message" required></textarea>
+    <div class="error-message" id="body-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
     <input type="url" name="url" placeholder="URL (optional)">
     <input type="button" name="previous" class="previous action-button" value="Back" onclick="
         $('.progressbar li').eq($('fieldset').index($(this).parent())).removeClass('active');
         $(this).parent().hide().prev().show();">
-    <button type="submit" class="next action-button" onclick="$(this).parent().hide().next().show()">Submit</button>
+    <input type="submit" class="next action-button" value="Submit" onclick="
+        if(validateFieldset($(this).parent())){
+            submitPhishingForm();
+        }">
 </fieldset>
-<fieldset data-check-id="3"> 
+<fieldset data-check-id="3" style="display:none;">
     <h2 class="fs-title" style="text-align:center;">Phishing Email Detection Result</h2>
     <div id="resultContent">
-        {{result}}
+        <!-- This will be filled dynamically -->
     </div>
+    <input type="button" class="action-button" onclick="goToStart()" value="Done">
 </fieldset>
 </form>
+
 <script>
+    document.getElementById('phishingForm').addEventListener('keydown', function(event) {
+        const activeFieldset = document.querySelector('fieldset:not([style*="display:none"])');
+        const isFinalStep = activeFieldset.getAttribute('data-check-id') === '2';
+
+        if (event.key === 'Enter' && !isFinalStep) {
+            event.preventDefault();
+            activeFieldset.querySelector('.next').click();
+        }
+    });
+
+    function goToStart() {
+        // Hide result fieldset
+        document.querySelector('[data-check-id="3"]').style.display = 'none';
+
+        // Show first fieldset
+        document.querySelector('[data-check-id="1"]').style.display = 'block';
+
+        // Reset progress bar
+        document.querySelectorAll('.progressbar li').forEach((li, index) => {
+            li.classList.remove('active');
+            if (index === 0) li.classList.add('active');
+        });
+
+        // Optionally clear form fields
+        document.getElementById('phishingForm').reset();
+    }
+
+    function submitPhishingForm() {
+        const formData = new FormData(document.getElementById('phishingForm'));
+
+        fetch('/submit', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            let urlHTML = '';
+            if (data.url) {
+                urlHTML = `<p><strong>URL:</strong> ${data.url}</p><br><br>`;
+            }
+            else {
+                urlHTML = `<br><br>`;
+            }
+
+            const resultHTML = `
+                <p><strong>Sender Email:</strong> ${data.senderEmail}</p>
+                <p><strong>Subject:</strong> ${data.subjectMessage}</p>
+                <p><strong>Body:</strong> ${data.bodyMessage}</p> 
+                ${urlHTML}
+                <p><strong>Analysis Result:</strong></p>
+                <p><strong>Whitelist Status:</strong> ${data.email}</p>
+                <p><strong>Subject Risk Score:</strong> ${data.subject_score}</p>
+                <p><strong>Body Risk Score:</strong> ${data.body_score}</p>
+            `;
+            document.getElementById('resultContent').innerHTML = resultHTML;
+
+            // Show result fieldset, hide previous
+            document.querySelector('[data-check-id="2"]').style.display = 'none';
+            document.querySelector('[data-check-id="3"]').style.display = 'block';
+            document.querySelector('.progressbar li:nth-child(3)').classList.add('active');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
     function isValidEmail(email) {
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email.toLowerCase());
@@ -199,15 +257,6 @@ body {
                 } else {
                     $i_sender.removeClass('error');
                     $('#sender-email-error').hide();
-                }
-
-                if (!isValidEmail($i_receiver.val())) {
-                    ok = false;
-                    $i_receiver.addClass('error');
-                    $('#receiver-email-error').text('Please enter a valid receiver email address.').show();
-                } else {
-                    $i_receiver.removeClass('error');
-                    $('#receiver-email-error').hide();
                 }
                 break;
             // Fieldset with 'data-check-id' == '2'

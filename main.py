@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import re
 import csv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 from openData import readFile
 from whiteList import whitelistCheck
@@ -39,26 +39,38 @@ def index():
 # Handle form submission
 @app.route('/submit', methods=['POST'])
 def submit_data():
-    sender_email = request.form['sender_email']
-    receiver_email = request.form['receiver_email']
-    subject = request.form['subject']
-    body = request.form['body']
-    url = request.form['url']
+    if request.method == 'POST':
+        sender_email = request.form['sender_email']
+        message_data = {
+            'subject': request.form['subject'],
+            'body': request.form['body']
+        }
+        url = request.form['url']
 
-   # Run phishing detection
-    getEmail = whitelistCheck(sender_email)
-    emailStats = getEmail.extract_emailDomain()        #Print sender's domain
-    getEmail.check_against_whitelist()
-    getEmail.get_stats()
+    # Run phishing detection
+        getEmail = whitelistCheck(sender_email)
+        getEmail.extract_emailDomain()        #Print sender's domain
+        emailStats = getEmail.check_against_whitelist()
+        getEmail.get_stats()
 
-    getBody = detectionKeyword(subject + body)
-    getBody.extract_messageBody()
-    subject_analysis = getBody.analyze_subject()
-    body_analysis = getBody.analyze_message()
-    
-    result = f"Email Stats: {sender_email}, \nSubject Analysis: {subject}, \nBody Analysis: {body}"
-    return render_template("index.html", result=result)
-
+        getBody = detectionKeyword(message_data)
+        getBody.extract_messageBody()
+        getBody.check_for_keywords(message_data['subject'], is_subject=True)
+        getBody.check_for_keywords(message_data['body'], is_subject=False)
+        subject_analysis = getBody.analyze_subject()
+        body_analysis = getBody.analyze_message()
+     
+        return jsonify({
+            'senderEmail': f"{sender_email}",
+            'subjectMessage': f"{message_data['subject']}",
+            'bodyMessage': f"{message_data['body']}",
+            'url': f"{url}",
+            'email': f"{emailStats}",
+            'subject_score': subject_analysis,
+            'body_score': body_analysis
+        })
+    else:
+        return render_template("index.html", result="Error: Invalid request method.")
 # Run the Flask app
 # When testing your python code, delete this line first.
 if __name__ == '__main__':

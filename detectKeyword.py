@@ -28,13 +28,19 @@ class detectionKeyword:
         self.unique_subject = set()
         self.unique_message = set()
 
-        if self.data:
-            for row in self.data:  # Changed from 'sender' to 'row' for clarity
+        # Normalize input
+        if isinstance(self.data, dict):
+            subject = str(self.data.get('subject', ''))
+            message = str(self.data.get('body', ''))
+            self.unique_subject.add(subject)
+            self.unique_message.add(message)
+
+        elif isinstance(self.data, list):
+            # CSV case: list of rows
+            for row in self.data:
                 try:
-                    # Assuming your CSV structure has subject at index 3 and message at index 4
                     subject = str(row[3]) if len(row) > 3 else ""
                     message = str(row[4]) if len(row) > 4 else ""
-
                     self.unique_subject.add(subject)
                     self.unique_message.add(message)
                 except Exception as e:

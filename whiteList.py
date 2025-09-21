@@ -1,5 +1,4 @@
-﻿import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+﻿from flask import Flask, request, render_template
 import re
 import csv
 
@@ -22,24 +21,34 @@ class whitelistCheck:
 
     #Extract sender's email domain only (after @)
     def extract_emailDomain(self):
-        self.unique_domains = set() 
+        self.unique_domains = set()
 
-        if self.data:
-            for sender in self.data:
-                try:
-                    # Convert to string and handle any encoding issues
-                    sender_str = str(sender[0]).encode('utf-8', errors='replace').decode('utf-8')
-                    # Define email pattern
-                    email_pattern = r'[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})'
-                    #Identify email from sender string
-                    match = re.search(email_pattern, sender_str) 
-                    if match:
-                        domains = match.group(1).lower()
-                        self.unique_domains.add(domains)
-                except Exception as e:
-                    print(f"Error processing: {sender}, error: {e}")
-                    continue
+        # Normalize input: make sure it's a list of lists
+        if isinstance(self.data, str):
+            data_list = [[self.data]]
+        elif isinstance(self.data, list):
+            # If it's a list of strings, wrap each string
+            if all(isinstance(item, str) for item in self.data):
+                data_list = [[item] for item in self.data]
+            else:
+                data_list = self.data
+        else:
+            data_list = []
+
+        for sender in data_list:
+            try:
+                sender_str = str(sender[0]).encode('utf-8', errors='replace').decode('utf-8')
+                email_pattern = r'[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})'
+                match = re.search(email_pattern, sender_str)
+                if match:
+                    domain = match.group(1).lower()
+                    self.unique_domains.add(domain)
+            except Exception as e:
+                print(f"Error processing: {sender}, error: {e}")
+                continue
+
         return list(self.unique_domains)
+
 
     def check_against_whitelist(self):
         """Check domains against whitelist"""
@@ -51,7 +60,7 @@ class whitelistCheck:
         self.non_whitelisted_count = 0
         self.total_domains = len(self.unique_domains)  # Use unique count
 
-        results = []
+        
 
         # Check each unique domain against whitelist
         for domain in self.unique_domains:
@@ -62,10 +71,11 @@ class whitelistCheck:
             else:
                 self.non_whitelisted_count += 1
                 
-            results.append({
-                'domain': domain,
-                'status': '✅ Whitelisted' if is_whitelisted else '❌ Not Whitelisted'
-            })
+            # results.append({
+            #     'domain': domain,
+            #     'status': '✅ Whitelisted' if is_whitelisted else '❌ Not Whitelisted'
+            # })
+            results = "✅ Whitelisted" if is_whitelisted else "❌ Not Whitelisted"
         
         return results
 
