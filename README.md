@@ -1,16 +1,22 @@
-# 🛡️ Phishing Email Detection System
+# Phishing-Email-Detection-System (TEAM P15-1)
 
+## Team Members: 
+- Pek Qi Feng, 2502624, 2502624@sit.singaporetech.edu.sg
+- Jomond Lim Zi Kang, 2500340, 2500340@sit.singaporetech.edu.sg
+- Raphael Ang, 2500632, 2500632@sit.singaporetech.edu.sg
+- Rachelle Ang, 2503641, 2503641@sit.singaporetech.edu.sg	
+
+## Project Title: 
+Phishing Email Detection System
+
+## Short description: 
 A comprehensive Python-based system for detecting phishing emails using multiple analysis techniques and risk scoring.
 
-## ✨ Features
-
-- **Domain Whitelist Verification**: Checks if sender domains are on a predefined safe list
-- **Keyword Analysis**: Scans subject and body for suspicious keywords with weighted scoring
-- **Position-Based Risk Assessment**: Higher scores for suspicious keywords in subject lines or early in messages
-- **Domain Spoofing Detection**: Identifies visually similar fake domains using similarity algorithms
-- **Suspicious Link Detection**: Detects IP addresses, mismatched domains, and suspicious TLDs
-- **Comprehensive Risk Scoring**: Combines all analysis results for final classification
-- **Multiple Classification Levels**: Safe, Suspicious, or Phishing
+## Team Allocation:
+- Qi Feng: Suspicious URL Detection, Edit Distance Check
+- Jomond: Final Risk Score
+- Raphael: Whitelist Check, Keyword Detection
+- Rachelle: Keyword Position Scoring, WebPage
 
 ## 🚀 Quick Start
 
