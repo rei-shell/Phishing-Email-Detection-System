@@ -152,11 +152,10 @@ body {
     <div class="error-message" id="subject-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
     <textarea name="body" placeholder="Body Message" required></textarea>
     <div class="error-message" id="body-error" style="display:none;color:tomato;font-size:12px;text-align:left;margin-bottom:5px;"></div>
-    <input type="url" name="url" placeholder="URL (optional)">
     <input type="button" name="previous" class="previous action-button" value="Back" onclick="
         $('.progressbar li').eq($('fieldset').index($(this).parent())).removeClass('active');
         $(this).parent().hide().prev().show();">
-    <input type="submit" class="next action-button" value="Submit" onclick="
+    <input type="submit" class="next action-button" value="Analyze" onclick="
         if(validateFieldset($(this).parent())){
             submitPhishingForm();
         }">
@@ -207,20 +206,12 @@ body {
         })
         .then(response => response.json())
         .then(data => {
-            let urlHTML = '';
-            if (data.url) {
-                urlHTML = `<p><strong>URL:</strong> ${data.url}</p><br><br>`;
-            }
-            else {
-                urlHTML = `<br><br>`;
-            }
-
             const resultHTML = `
                 <p><strong>Sender Email:</strong> ${data.senderEmail}</p>
                 <p><strong>Subject:</strong> ${data.subjectMessage}</p>
                 <p><strong>Body:</strong> ${data.bodyMessage}</p> 
-                ${urlHTML}
-                <p><strong>Analysis Result:</strong></p>
+                <br><br>
+                <p><strong>Detailed Analysis Report:</strong></p>
                 <p><strong>Whitelist Status:</strong> ${data.email}</p>
                 <p><strong>Subject Risk Score:</strong> ${data.subject_score}</p>
                 <p><strong>Body Risk Score:</strong> ${data.body_score}</p>
