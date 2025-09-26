@@ -32,7 +32,7 @@ A comprehensive Python-based system for detecting phishing emails using multiple
 
 **Graphical Interface (Recommended):**
 ```bash
-python "start phishing detector.py"
+python "startPhishingDetector.py"
 # Or on Windows, double-click: start_gui.bat
 ```
 
@@ -44,33 +44,45 @@ python example_usage.py
 ### Basic Usage
 
 ```python
+from flask import Flask, render_template, request, jsonify
 import importlib.util
 import sys
 
-# Load the backend module
-spec = importlib.util.spec_from_file_location("phishing_detector_backend", "phishing detector system (back end).py")
-phishing_detector_backend = importlib.util.module_from_spec(spec)
-sys.modules["phishing_detector_backend"] = phishing_detector_backend
-spec.loader.exec_module(phishing_detector_backend)
+# Dynamically import phishingDetectorBackEnd.py
+spec = importlib.util.spec_from_file_location("phishingDetectorBackEnd", "./phishingDetectorBackEnd.py")
+phishing_module = importlib.util.module_from_spec(spec)
+sys.modules["phishingDetectorBackEnd"] = phishing_module
+spec.loader.exec_module(phishing_module)
 
-PhishingDetector = phishing_detector_backend.PhishingDetector
+# Now you can use phishingDetector from the loaded module
+phishingDetector = phishing_module.phishingDetector  
 
-# Initialize the detector
-detector = PhishingDetector()
+app = Flask(__name__)
 
-# Analyze an email
-results = detector.analyze_email(
-    sender_email="suspicious@fake-paypal.com",
-    subject="URGENT: Account Suspended",
-    body="Click here to verify your account: http://192.168.1.100/login"
-)
+# Serve the HTML form
+@app.route('/')
+def home():
+    return render_template("index.html")
 
-# Print detailed analysis
-detector.print_analysis(results)
+# Handle the form submission
+@app.route('/submit', methods=['POST'])
+def submit():
+    if request.method != "POST":
+        return render_template("index.html", result="Error: Invalid request method.")
+    else:
+        senderEmail = request.form['senderEmail']
+        subject = request.form['subject']
+        body = request.form['body']
 
-# Access results programmatically
-print(f"Classification: {results['classification']}")
-print(f"Risk Score: {results['total_score']}")
+        # Initialize phishing checker
+        checker = phishingDetector(senderEmail, subject, body)
+        results = checker.analyze()
+
+        return jsonify(results)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 ```
 
 ## 📊 Analysis Components
@@ -107,20 +119,17 @@ print(f"Risk Score: {results['total_score']}")
 ## 🖥️ User Interface
 
 ### Graphical Interface (GUI)
-The system includes a user-friendly graphical interface built with tkinter:
+The system includes a user-friendly graphical interface built with html, css and javascript:
 
 **Features:**
 - 📧 Easy input fields for sender, subject, and body
 - 🔍 One-click email analysis
 - 🎨 Color-coded results (Green=Safe, Orange=Suspicious, Red=Phishing)
 - 📊 Detailed analysis breakdown
-- 📝 Pre-loaded example templates
-- 🗑️ Clear/reset functionality
-- ⚡ Real-time progress indicators
 
 **Launch GUI:**
 ```bash
-python "start phishing detector.py"
+python "startPhishingDetector.py"
 # Or on Windows: double-click start_gui.bat
 ```
 
@@ -168,9 +177,9 @@ detector.legitimate_domains.add('your-company.com')
 
 ### Adjusting Scoring
 Modify the scoring weights in the respective methods:
-- `calculate_keyword_score()`: Keyword scoring weights
-- `calculate_link_score()`: Link analysis weights
-- `analyze_email()`: Overall classification thresholds
+- `calculateKeywordScore()`: Keyword scoring weights
+- `calculateLinkScore()`: Link analysis weights
+- `analyze()`: Overall classification thresholds
 
 ## 📈 Performance Characteristics
 
@@ -187,17 +196,17 @@ The modular design allows easy extension:
 
 ```python
 class CustomPhishingDetector(PhishingDetector):
-    def custom_analysis(self, email_data):
+    def customAnalysis(self, emailData):
         # Add your custom analysis logic
         pass
     
-    def analyze_email(self, sender_email, subject, body):
+    def analyze(self, senderEmail, subject, body):
         # Call parent analysis
-        results = super().analyze_email(sender_email, subject, body)
+        results = super().analyzeEmail(senderEmail, subject, body)
         
         # Add custom analysis
-        custom_score = self.custom_analysis({'sender': sender_email, 'subject': subject, 'body': body})
-        results['total_score'] += custom_score
+        customScore = self.customAnalysis({'sender': senderEmail, 'subject': subject, 'body': body})
+        results['totalScore'] += customScore
         
         return results
 ```
@@ -238,15 +247,15 @@ This project is open source and available under the MIT License.
 ## 📁 File Structure
 
 **Core System Files:**
-- `phishing detector system (back end).py` - Main detection system with all analysis features
-- `phishing_gui.py` - Graphical user interface (tkinter-based)
-- `start phishing detector.py` - Main GUI launcher script
-- `start_gui.bat` - Windows batch file for easy GUI launch
+- `phishingDetectorBackEnd.py` - Main detection system with all analysis features
+- `phishingGui.py` - Graphical user interface (html-based)
+- `startPhishingDetector.py` - Main GUI launcher script
+- `startGui.bat` - Windows batch file for easy GUI launch
 
 **Testing & Examples:**
-- `example_usage.py` - Interactive demo with test cases
-- `test_system.py` - Simple verification tests
-- `manual_test_example.py` - Expected output demonstration
+- `exampleUsage.py` - Interactive demo with test cases
+- `testSystem.py` - Simple verification tests
+- `manualTestExample.py` - Expected output demonstration
 
 **Documentation:**
 - `README.md` - This comprehensive documentation

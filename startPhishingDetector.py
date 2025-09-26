@@ -14,8 +14,8 @@ def main():
         print("Loading interface components...")
         
         # Import and run the GUI
-        from phishing_gui import main as gui_main
-        gui_main()
+        from phishingGui import app
+        app.run()
         
     except ImportError as e:
         print(f"❌ Import Error: {e}")
