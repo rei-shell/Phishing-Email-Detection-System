@@ -80,7 +80,7 @@ class phishingDetector:
         earlyResults = self.scanKeywords(earlyBody, isSubject=False)
         
         # Calculate weighted score
-        score = 0
+        score = 1
         score += (subjectResults['high'] + bodyResults['high']) * 1
         score += (subjectResults['medium'] + bodyResults['medium']) * 1
         score += (subjectResults['low'] + bodyResults['low']) * 1
@@ -193,10 +193,10 @@ class phishingDetector:
         analysis = self.analyzeLinks(links, claimed_domain)
 
         return (
-            f"Links found: {', '.join(links)}\n"
-            f"Suspicious IP links: {analysis['ip_addresses']}\n"
-            f"Mismatched domains: {analysis['mismatched_domains']}\n"
-            f"Suspicious TLDs: {analysis['suspicious_tlds']}\n"
+            f"Links found: {', '.join(links)}<br>"
+            f"Suspicious IP links: {analysis['ip_addresses']}<br>"
+            f"Mismatched domains: {analysis['mismatched_domains']}<br>"
+            f"Suspicious TLDs: {analysis['suspicious_tlds']}<br>"
             f"URL shorteners: {analysis['url_shorteners']}"
         )
         
@@ -247,29 +247,29 @@ class phishingDetector:
 
         # 3. Domain spoofing
         isSpoofed, similar_domain = self.detectDomainSpoofing(self.senderEmail)
-        spoofing_score = 15 if isSpoofed else 0
+        spoofingScore = 15 if isSpoofed else 0
 
         # 4. Link analysis
         senderDomain = self.extractDomain(self.senderEmail)
         linkScore = self.calculateLinkScore(self.subject, self.body, senderDomain)
 
         # 5. Total score
-        totalScore = domainScore + keywordScore + spoofing_score + linkScore
+        totalScore = domainScore + keywordScore + spoofingScore + linkScore
 
         # 6. Classification
-        if totalScore >= 50:
-            classfiction = 'Phishing'
-        elif totalScore >= 20:
-            classfiction = 'Suspicious'
+        if totalScore >= 100:
+            classfiction = "🚨  HIGH RISK: This email appears to be a phishing attempt!"
+        elif totalScore >= 30:
+            classfiction = "⚠️  MEDIUM RISK: This email contains suspicious elements."
         else:
-            classfiction = 'Safe'
+            classfiction = "✅ LOW RISK: This email appears to be safe."
         
         # 6. Prepare final analysis dictionary
         results = {
             "senderEmail": self.senderEmail,
             "subjectMessage": self.subject,
             "bodyMessage": self.body,
-            "domainStatus": domainSafe,
+            "domainSafe": domainSafe,
             "keywordScore": keywordScore,
             "domainSpoofing": {
                 "isSuspicious": isSpoofed,

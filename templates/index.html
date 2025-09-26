@@ -207,21 +207,60 @@ body {
         .then(response => response.json())
         .then(data => {
             const resultHTML = `
-                <p><strong>Sender Email:</strong> ${data.senderEmail}</p>
-                <p><strong>Subject:</strong> ${data.subjectMessage}</p>
-                <p><strong>Body:</strong> ${data.bodyMessage}</p> 
-                <br><br>
-                <p><strong>Detailed Analysis Report:</strong></p>
-                <p><strong>Domain Status:</strong> ${data.domainStatus}</p>
-                <p><strong>Keyword Analysis</strong> ${data.keywordAnalysis}</p>
-                <p><strong>Domain Spoofing:</strong> ${data.domainSpoofing.isSuspicious ? 'Suspicious - similar to ' + data.domainSpoofing.similarTo : 'Safe'}</p>
-                <p><strong>Link Analysis:</strong> ${data.linkAnalysis}</p>
-                <br><br>
-                <p><strong>Total Risk Score:</strong> ${data.totalRiskScore}</p>
-                <p><strong>Phishing Status:</strong> ${data.classification}</p>
-                <p>Score ranges: Safe (0-14), Suspicious (15-29), Phishing (30+)</p>
-                <br><br>
+                <h3>Detailed Analysis Report</h3>
+                <div style="display:flex; justify-content:center; margin-top:20px;">
+                    <table style="width:70%; max-width:800px; border-collapse:collapse;">
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right; width:300px;"><strong>Sender Email:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.senderEmail}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Subject:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.subjectMessage}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Body:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.bodyMessage}</td>
+                        </tr>
+
+                        <tr><td colspan="2" style="padding:10px 0;"></td></tr>
+
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Domain Safety:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;"> ${data.domainSafe} ? "✗ Not in safe list" : "✓ Safe"</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Keyword Analysis:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.keywordScore}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Domain Spoofing:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.domainSpoofing.isSuspicious ? '✗ Similar to ' + data.domainSpoofing.similarTo : '✓ No suspicious similarity detected'}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right; vertical-align:top;"><strong>Link Analysis:</strong></td>
+                            <td style="padding:6px 15px; text-align:left; white-space: pre-line;">${data.linkAnalysis}</td>
+                        </tr>
+
+                        <tr><td colspan="2" style="padding:10px 0;"></td></tr>
+
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Total Risk Score:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.totalRiskScore}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Phishing Status:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">${data.classification}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 15px; text-align:right;"><strong>Score ranges:</strong></td>
+                            <td style="padding:6px 15px; text-align:left;">Safe (0-14), Suspicious (15-29), Phishing (30+)</td>
+                        </tr>
+                    </table>
+                </div>
             `;
+
+
             document.getElementById('resultContent').innerHTML = resultHTML;
 
             // Show result fieldset, hide previous

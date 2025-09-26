@@ -3,9 +3,7 @@ from phishingDetectorBackEnd import phishingDetector
 
 app = Flask(__name__)
 
-
 # Serve the HTML form
-
 @app.route('/')
 def home():
     return render_template("index.html")

@@ -7,21 +7,21 @@ REM Try different Python commands
 python --version >nul 2>&1
 if %errorlevel%==0 (
     echo Starting GUI with 'python'...
-    python "start phishing detector.py"
+    python "startPhishingDetector.py"
     goto :end
 )
 
 python3 --version >nul 2>&1
 if %errorlevel%==0 (
     echo Starting GUI with 'python3'...
-    python3 "start phishing detector.py"
+    python3 "startPhishingDetector.py"
     goto :end
 )
 
 py --version >nul 2>&1
 if %errorlevel%==0 (
     echo Starting GUI with 'py'...
-    py "start phishing detector.py"
+    py "startPhishingDetector.py"
     goto :end
 )
 
