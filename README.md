@@ -213,23 +213,7 @@ class CustomPhishingDetector(PhishingDetector):
 
 ## 📝 Example Output
 
-```
-============================================================
-PHISHING EMAIL ANALYSIS REPORT
-============================================================
-Sender: security@payp4l.com
-Subject: Security Alert: Unauthorized Access Detected
-Classification: Phishing
-Total Risk Score: 85
-------------------------------------------------------------
-Domain Safety: ✗ Not in safe list
-Keyword Risk Score: 35
-Domain Spoofing: ✗ Similar to paypal.com
-Link Risk Score: 25
-------------------------------------------------------------
-⚠️  HIGH RISK: This email appears to be a phishing attempt!
-============================================================
-```
+![alt text](https://github.com/rei-shell/Phishing-Email-Detection-System/blob/main/outCome.png "Example Output")
 
 ## 🤝 Contributing
 
