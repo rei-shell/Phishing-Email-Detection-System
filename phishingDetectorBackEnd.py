@@ -257,9 +257,9 @@ class phishingDetector:
         totalScore = domainScore + keywordScore + spoofingScore + linkScore
 
         # 6. Classification
-        if totalScore >= 100:
+        if totalScore >= 30:
             classfiction = "🚨  HIGH RISK: This email appears to be a phishing attempt!"
-        elif totalScore >= 30:
+        elif totalScore >= 15:
             classfiction = "⚠️  MEDIUM RISK: This email contains suspicious elements."
         else:
             classfiction = "✅ LOW RISK: This email appears to be safe."

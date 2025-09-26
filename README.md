@@ -136,8 +136,8 @@ python "startPhishingDetector.py"
 ### Command Line Interface
 For users who prefer command-line interaction:
 ```bash
-python example_usage.py  # Demo with test cases
-python test_system.py    # Quick verification
+python exampleUsage.py  # Demo with test cases
+python testSystem.py    # Quick verification
 ```
 
 ## 🧪 Test Cases
