@@ -80,10 +80,10 @@ class phishingDetector:
         earlyResults = self.scanKeywords(earlyBody, isSubject=False)
         
         # Calculate weighted score
-        score = 1
-        score += (subjectResults['high'] + bodyResults['high']) * 1
-        score += (subjectResults['medium'] + bodyResults['medium']) * 1
-        score += (subjectResults['low'] + bodyResults['low']) * 1
+        #score = 1
+        #score += (subjectResults['high'] + bodyResults['high']) * 1
+        #score += (subjectResults['medium'] + bodyResults['medium']) * 1
+        #score += (subjectResults['low'] + bodyResults['low']) * 1
         
         # Bonus for keywords appearing early in message
         score += earlyResults['high'] * 5
@@ -130,6 +130,7 @@ class phishingDetector:
 
         return False, ""
 
+    #extract link from email then checking that link is in the correct url format
     def extractLinks(self, text: str) -> List[str]:
         """Extract all URLs from text."""
         urlPattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|' \
@@ -258,11 +259,11 @@ class phishingDetector:
 
         # 6. Classification
         if totalScore >= 30:
-            classfiction = "🚨  HIGH RISK: This email appears to be a phishing attempt!"
+            classfiction = "HIGH RISK: This email appears to be a phishing attempt!"
         elif totalScore >= 15:
-            classfiction = "⚠️  MEDIUM RISK: This email contains suspicious elements."
+            classfiction = "MEDIUM RISK: This email contains suspicious elements."
         else:
-            classfiction = "✅ LOW RISK: This email appears to be safe."
+            classfiction = "LOW RISK: This email appears to be safe."
         
         # 6. Prepare final analysis dictionary
         results = {
