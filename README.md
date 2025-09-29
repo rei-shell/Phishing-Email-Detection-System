@@ -1,4 +1,4 @@
-# Phishing-Email-Detection-System (TEAM P15-1)
+# Phishing Email Detection System (INF1002 P15-1)
 
 ## Team Members: 
 - Pek Qi Feng, 2502624, 2502624@sit.singaporetech.edu.sg
