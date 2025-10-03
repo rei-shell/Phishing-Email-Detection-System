@@ -19,7 +19,7 @@ A comprehensive Python-based system for detecting phishing emails using multiple
 - Rachelle: Keyword Position Scoring, WebPage
 
 ### Prerequisites
-- Python 3.7 or higher
+- Python 3.7 or higherjjjjjjj
 - No external dependencies required (uses only built-in Python modules)
 
 ### Installation
