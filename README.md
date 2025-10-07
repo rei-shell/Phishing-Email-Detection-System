@@ -18,8 +18,6 @@ A comprehensive Python-based system for detecting phishing emails using multiple
 - Raphael: Whitelist Check, Keyword Detection
 - Rachelle: Keyword Position Scoring, WebPage
 
-## 🚀 Quick Start
-
 ### Prerequisites
 - Python 3.7 or higher
 - No external dependencies required (uses only built-in Python modules)
@@ -29,17 +27,6 @@ A comprehensive Python-based system for detecting phishing emails using multiple
 1. Clone or download the files to your local machine
 2. Navigate to the project directory
 3. Choose your preferred interface:
-
-**Graphical Interface (Recommended):**
-```bash
-python "startPhishingDetector.py"
-# Or on Windows, double-click: start_gui.bat
-```
-
-**Command Line Interface:**
-```bash
-python example_usage.py
-```
 
 ### Basic Usage
 
@@ -85,7 +72,7 @@ if __name__ == "__main__":
 
 ```
 
-## 📊 Analysis Components
+## PhisingDetector Components
 
 ### 1. Domain Safety Check
 - Verifies sender domain against whitelist of known safe domains
@@ -116,50 +103,13 @@ if __name__ == "__main__":
 - **Suspicious**: Score 15-29
 - **Phishing**: Score ≥ 30
 
-## 🖥️ User Interface
-
-### Graphical Interface (GUI)
-The system includes a user-friendly graphical interface built with html, css and javascript:
-
-**Features:**
-- 📧 Easy input fields for sender, subject, and body
-- 🔍 One-click email analysis
-- 🎨 Color-coded results (Green=Safe, Orange=Suspicious, Red=Phishing)
-- 📊 Detailed analysis breakdown
-
-**Launch GUI:**
-```bash
-python "startPhishingDetector.py"
-# Or on Windows: double-click start_gui.bat
-```
-
-### Command Line Interface
-For users who prefer command-line interaction:
-```bash
-python exampleUsage.py  # Demo with test cases
-python testSystem.py    # Quick verification
-```
-
 ## 🧪 Test Cases
 
 The system includes comprehensive test cases demonstrating:
 
-- ✅ Safe emails from legitimate sources
-- ⚠️ Suspicious emails with concerning elements
-- 🚨 Clear phishing attempts with multiple red flags
-
-Available in both GUI (example templates) and command-line versions.
-
-## 🎮 Interactive Mode
-
-The example script includes an interactive mode where you can test your own emails:
-
-```bash
-python example_usage.py
-# Follow prompts to enter interactive mode
-```
-
-## 🔧 Customization
+-  Safe emails from legitimate sources
+-  Suspicious emails with concerning elements
+-  Clear phishing attempts with multiple red flags
 
 ### Adding Safe Domains
 ```python
@@ -176,75 +126,11 @@ detector.legitimate_domains.add('your-company.com')
 ```
 
 ### Adjusting Scoring
-Modify the scoring weights in the respective methods:
+score is adjusted in the respective methods:
 - `calculateKeywordScore()`: Keyword scoring weights
 - `calculateLinkScore()`: Link analysis weights
 - `analyze()`: Overall classification thresholds
 
-## 📈 Performance Characteristics
-
-- **Speed**: Analyzes emails in milliseconds
-- **Memory**: Minimal memory footprint
-- **Accuracy**: Multi-layered approach reduces false positives
-- **Scalability**: Can process thousands of emails efficiently
-
-## 🛠️ Advanced Features
-
-### Extending the System
-
-The modular design allows easy extension:
-
-```python
-class CustomPhishingDetector(PhishingDetector):
-    def customAnalysis(self, emailData):
-        # Add your custom analysis logic
-        pass
-    
-    def analyze(self, senderEmail, subject, body):
-        # Call parent analysis
-        results = super().analyzeEmail(senderEmail, subject, body)
-        
-        # Add custom analysis
-        customScore = self.customAnalysis({'sender': senderEmail, 'subject': subject, 'body': body})
-        results['totalScore'] += customScore
-        
-        return results
-```
-
 ## 📝 Example Output
 
 ![alt text](https://github.com/rei-shell/Phishing-Email-Detection-System/blob/main/outCome.png "Example Output")
-
-## 🤝 Contributing
-
-Feel free to enhance the system by:
-- Adding more sophisticated analysis techniques
-- Improving keyword detection
-- Enhancing domain spoofing detection
-- Adding machine learning capabilities
-- Implementing email parsing for real email files
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 📁 File Structure
-
-**Core System Files:**
-- `phishingDetectorBackEnd.py` - Main detection system with all analysis features
-- `phishingGui.py` - Graphical user interface (html-based)
-- `startPhishingDetector.py` - Main GUI launcher script
-- `startGui.bat` - Windows batch file for easy GUI launch
-
-**Testing & Examples:**
-- `exampleUsage.py` - Interactive demo with test cases
-- `testSystem.py` - Simple verification tests
-- `manualTestExample.py` - Expected output demonstration
-
-**Documentation:**
-- `README.md` - This comprehensive documentation
-- `requirements.txt` - Dependencies (uses only built-in Python modules)
-
-## ⚠️ Disclaimer
-
-This system is designed for educational and demonstration purposes. While it implements industry-standard detection techniques, it should be used as part of a comprehensive email security strategy, not as the sole protection mechanism.
