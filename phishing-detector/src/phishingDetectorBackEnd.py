@@ -53,6 +53,6 @@ class phishingDetector:
 
         return results
     
-def analyzeEmail(senderEmail: str, subject: str, body: str) -> Dict:
-    """function for callers that don't want to instantiate the class."""
-    return phishingDetector(senderEmail, subject, body).analyze()
+#def analyzeEmail(senderEmail: str, subject: str, body: str) -> Dict:
+#    """function for callers that don't want to instantiate the class."""
+#    return phishingDetector(senderEmail, subject, body).analyze()
