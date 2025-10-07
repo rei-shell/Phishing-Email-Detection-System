@@ -1,8 +1,8 @@
-from utils.domainAnalyzer import extractDomain, isDomainSafe, detectDomainSpoofing
-from utils.keywordAnalyzer import scanKeywords, calculateKeywordScore
-from utils.linkAnalyzer import extractLinks, analyzeLinks, calculateLinkScore
-from config.keywords import highRiskkeywords, mediumRiskkeywords, lowRiskkeywords
-from config.domains import whiteList, legitimateDomains
+from domainAnalyzer import extractDomain, isDomainSafe, detectDomainSpoofing
+from keywordAnalyzer import calculateKeywordScore
+from linkAnalyzer import extractLinks, analyzeLinks, calculateLinkScore
+from keywords import highRiskKeywords, mediumRiskKeywords, lowRiskKeywords
+from domains import whiteList, legitimateDomains
 from typing import Dict
 
 class phishingDetector:
@@ -11,18 +11,18 @@ class phishingDetector:
         self.subject = subject
         self.body = body
         self.whiteList = whiteList
-        self.highRiskkeywords = highRiskkeywords
-        self.mediumRiskkeywords = mediumRiskkeywords
-        self.lowRiskkeywords = lowRiskkeywords
+        self.highRiskKeywords = highRiskKeywords
+        self.mediumRiskKeywords = mediumRiskKeywords
+        self.lowRiskKeywords = lowRiskKeywords
         self.legitimateDomains = legitimateDomains
 
     def analyze(self) -> Dict:
-        domainSafe = isDomainSafe(self.senderEmail)
+        domainSafe = isDomainSafe(self.senderEmail, self.whiteList)
         domainScore = 0 if domainSafe else 10
 
-        keywordScore = calculateKeywordScore(self.subject, self.body)
+        keywordScore = calculateKeywordScore(self.subject, self.body, self.highRiskKeywords, self.mediumRiskKeywords, self.lowRiskKeywords)
 
-        isSpoofed, similar_domain = detectDomainSpoofing(self.senderEmail)
+        isSpoofed, similarDomain = detectDomainSpoofing(self.senderEmail,self.legitimateDomains)
         spoofingScore = 15 if isSpoofed else 0
 
         senderDomain = extractDomain(self.senderEmail)
@@ -30,11 +30,11 @@ class phishingDetector:
 
         totalScore = domainScore + keywordScore + spoofingScore + linkScore
 
-        classification = "✅ LOW RISK: This email appears to be safe."
+        classification = "LOW RISK: This email appears to be safe."
         if totalScore >= 30:
-            classification = "🚨  HIGH RISK: This email appears to be a phishing attempt!"
+            classification = "HIGH RISK: This email appears to be a phishing attempt!"
         elif totalScore >= 15:
-            classification = "⚠️  MEDIUM RISK: This email contains suspicious elements."
+            classification = "MEDIUM RISK: This email contains suspicious elements."
 
         results = {
             "senderEmail": self.senderEmail,
@@ -44,11 +44,15 @@ class phishingDetector:
             "keywordScore": keywordScore,
             "domainSpoofing": {
                 "isSuspicious": isSpoofed,
-                "similarTo": similar_domain
+                "similarTo": similarDomain
             },
-            "linkAnalysis": analyzeLinks(extractLinks(self.body), extractDomain(self.senderEmail)),
+            "linkAnalysis": analyzeLinks(extractLinks(self.subject + " " + self.body), extractDomain(self.senderEmail)),
             "totalRiskScore": totalScore,
             "classification": classification
         }
 
         return results
+    
+def analyzeEmail(senderEmail: str, subject: str, body: str) -> Dict:
+    """function for callers that don't want to instantiate the class."""
+    return phishingDetector(senderEmail, subject, body).analyze()

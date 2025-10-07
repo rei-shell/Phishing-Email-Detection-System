@@ -15,10 +15,10 @@ def analyzeLinks(links: List[str], claimedSenderDomain: str) -> Dict[str, int]:
     Returns counts of different suspicious link types.
     """
     results = {
-        'ip_addresses': 0,
-        'mismatched_domains': 0,
-        'suspicious_tlds': 0,
-        'url_shorteners': 0
+        'ipAddresses': 0,
+        'mismatchedDomains': 0,
+        'suspiciousTlds': 0,
+        'urlShorteners': 0
     }
 
     suspiciousTlds = {'.tk', '.ml', '.ga', '.cf', '.top', '.click', '.download'}
@@ -31,35 +31,35 @@ def analyzeLinks(links: List[str], claimedSenderDomain: str) -> Dict[str, int]:
 
             # Check for IP addresses
             try:
-                ipaddress.ip_address(domain.split(':')[0])  # Remove port if present
-                results['ip_addresses'] += 1
+                ipaddress.ipAddress(domain.split(':')[0])  # Remove port if present
+                results['ipAddresses'] += 1
                 continue
             except ValueError:
                 pass
 
             # Check for URL shorteners
             if any(shortener in domain for shortener in urlShorteners):
-                results['url_shorteners'] += 1
+                results['urlShorteners'] += 1
 
             # Check for suspicious TLDs
             if any(domain.endswith(tld) for tld in suspiciousTlds):
-                results['suspicious_tlds'] += 1
+                results['suspiciousTlds'] += 1
 
             # Check for domain mismatch
             if claimedSenderDomain and claimedSenderDomain not in domain:
                 legitimateServices = {'google.com', 'microsoft.com', 'amazon.com'}
                 if not any(service in domain for service in legitimateServices):
-                    results['mismatched_domains'] += 1
+                    results['mismatchedDomains'] += 1
 
         except Exception:
-            results['mismatched_domains'] += 1
+            results['mismatchedDomains'] += 1
 
     return results
 
 def calculateLinkScore(subject: str, body: str, senderDomain: str) -> int:
     """Calculate risk score based on link analysis."""
-    all_text = subject + " " + body
-    links = extractLinks(all_text)
+    allText = subject + " " + body
+    links = extractLinks(allText)
     
     if not links:
         return 0
@@ -67,9 +67,9 @@ def calculateLinkScore(subject: str, body: str, senderDomain: str) -> int:
     linkAnalysis = analyzeLinks(links, senderDomain)
     
     score = 0
-    score += linkAnalysis['ip_addresses'] * 15
-    score += linkAnalysis['mismatched_domains'] * 10
-    score += linkAnalysis['suspicious_tlds'] * 8
-    score += linkAnalysis['url_shorteners'] * 5
+    score += linkAnalysis['ipAddresses'] * 15
+    score += linkAnalysis['mismatchedSomains'] * 10
+    score += linkAnalysis['suspiciousTlds'] * 8
+    score += linkAnalysis['urlShorteners'] * 5
     
     return score

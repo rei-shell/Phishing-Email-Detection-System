@@ -13,7 +13,7 @@ def isDomainSafe(email: str, whiteList: set) -> bool:
 def detectDomainSpoofing(senderEmail: str, legitimateDomains: set) -> tuple[bool, str]:
     """
     Detect if sender domain is visually similar to legitimate domains.
-    Returns (is_suspicious, similar_domain).
+    Returns (isSuspicious, similarDomain).
     """
     senderDomain = extractDomain(senderEmail)
 

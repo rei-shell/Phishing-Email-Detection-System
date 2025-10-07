@@ -1,4 +1,4 @@
-highRiskkeywords = {
+highRiskKeywords = {
     'urgent', 'immediate', 'suspended', 'verify', 'confirm', 'click here',
     'act now', 'limited time', 'expires', 'winner', 'congratulations',
     'prize', 'lottery', 'inheritance', 'transfer', 'beneficiary',
@@ -6,14 +6,14 @@ highRiskkeywords = {
     'unauthorized', 'suspicious activity', 'update payment', 'billing issue'
 }
 
-mediumRiskkeywords = {
+mediumRiskKeywords = {
     'free', 'offer', 'deal', 'discount', 'save money', 'cash',
     'investment', 'opportunity', 'guaranteed', 'risk-free',
     'no obligation', 'act fast', 'hurry', 'don\'t miss',
     'login', 'password', 'account', 'bank', 'credit card'
 }
 
-lowRiskkeywords = {
+lowRiskKeywords = {
     'promotion', 'newsletter', 'unsubscribe', 'marketing',
     'advertisement', 'sale', 'new product', 'update'
 }
