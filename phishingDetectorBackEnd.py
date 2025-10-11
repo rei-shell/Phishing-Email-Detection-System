@@ -5,7 +5,11 @@ from keywords import highRiskKeywords, mediumRiskKeywords, lowRiskKeywords
 from domains import whiteList, legitimateDomains
 from typing import Dict
 
+''' This class is responsible for analyzing emails to detect potential phishing attempts. 
+It uses various modules to evaluate the sender's domain, keywords in the email content, and links within the email.'''
 class phishingDetector:
+    '''When initializing the class, the sender's email, subject, and body are place as input, 
+    when then placed into class variables, as well call upon our modules to import the keyword list and the domain list'''
     def __init__(self, senderEmail, subject, body):
         self.senderEmail = senderEmail
         self.subject = subject
@@ -16,6 +20,8 @@ class phishingDetector:
         self.lowRiskKeywords = lowRiskKeywords
         self.legitimateDomains = legitimateDomains
 
+    ''' This function is the main function that analyzes the email, the email is first placed into a dictionary format. 
+    After which it is use to call other modules to perform the analysis and return the results'''
     def analyze(self) -> Dict:
         domainSafe = isDomainSafe(self.senderEmail, self.whiteList)
         domainScore = 0 if domainSafe else 10

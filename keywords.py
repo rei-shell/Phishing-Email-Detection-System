@@ -1,3 +1,5 @@
+'''This module contains keyword lists categorized by risk levels for phishing detection.'''
+
 highRiskKeywords = {
     'urgent', 'immediate', 'suspended', 'verify', 'confirm', 'click here',
     'act now', 'limited time', 'expires', 'winner', 'congratulations',

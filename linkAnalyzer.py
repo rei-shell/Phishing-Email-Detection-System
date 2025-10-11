@@ -2,18 +2,15 @@ import re
 import urllib.parse
 import ipaddress
 from typing import List, Dict
-
+"""Extract all URLs from text. using regex."""
 def extractLinks(text: str) -> List[str]:
-    """Extract all URLs from text."""
     urlPattern = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|' \
                   r'(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     return re.findall(urlPattern, text)
 
+   
+'''Analyze links for various risk factors.'''
 def analyzeLinks(links: List[str], claimedSenderDomain: str) -> Dict[str, int]:
-    """
-    Analyze links for suspicious patterns.
-    Returns counts of different suspicious link types.
-    """
     results = {
         'ipAddresses': 0,
         'mismatchedDomains': 0,
@@ -68,7 +65,7 @@ def calculateLinkScore(subject: str, body: str, senderDomain: str) -> int:
     
     score = 0
     score += linkAnalysis['ipAddresses'] * 15
-    score += linkAnalysis['mismatchedSomains'] * 10
+    score += linkAnalysis['mismatchedDomains'] * 10
     score += linkAnalysis['suspiciousTlds'] * 8
     score += linkAnalysis['urlShorteners'] * 5
     
