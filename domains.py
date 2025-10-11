@@ -1,4 +1,4 @@
-'''A list of known legitimate domains and a whitelist of common email providers.'''
+'''A list of known legitimate domains and a whitelist of common email providers. (TEST)'''
 
 whiteList = {
     'gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'aol.com',
