@@ -1,4 +1,4 @@
-# src/config/domains.py
+'''A list of known legitimate domains and a whitelist of common email providers.'''
 
 whiteList = {
     'gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'aol.com',
