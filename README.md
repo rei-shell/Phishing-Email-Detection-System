@@ -37,12 +37,12 @@ import sys
 
 # Dynamically import phishingDetectorBackEnd.py
 spec = importlib.util.spec_from_file_location("phishingDetectorBackEnd", "./phishingDetectorBackEnd.py")
-phishing_module = importlib.util.module_from_spec(spec)
-sys.modules["phishingDetectorBackEnd"] = phishing_module
+phishingModule = importlib.util.module_from_spec(spec)
+sys.modules["phishingDetectorBackEnd"] = phishingModule
 spec.loader.exec_module(phishing_module)
 
 # Now you can use phishingDetector from the loaded module
-phishingDetector = phishing_module.phishingDetector  
+phishingDetector = phishingModule.phishingDetector  
 
 app = Flask(__name__)
 
@@ -109,21 +109,8 @@ The system includes comprehensive test cases demonstrating:
 
 -  Safe emails from legitimate sources
 -  Suspicious emails with concerning elements
--  Clear phishing attempts with multiple red flags
-
-### Adding Safe Domains
-```python
-detector.safe_domains.add('your-domain.com')
-```
-
-### Modifying Keywords
-```python
-# Add high-risk keywords
-detector.high_risk_keywords.add('new-suspicious-term')
-
-# Add legitimate domains for spoofing detection
-detector.legitimate_domains.add('your-company.com')
-```
+-  Phishing emails with threatening elements
+-  Invalid Validation with missing information or incorrect information
 
 ### Adjusting Scoring
 score is adjusted in the respective methods:
